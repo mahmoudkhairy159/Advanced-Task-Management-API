@@ -1,0 +1,47 @@
+version: "3"
+services:
+    #PHP Service
+    dev-envirdian-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: dev-envirdian-envirdian/php
+        ports:
+            - "7001:9000"
+        container_name: dev-envirdian-app
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - /home/envirdian/backend/dev-envirdian:/var/www
+            - /etc/php/8.1/fpm/php.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - dev-envirdian-app-network
+
+    #MySQL Service
+    dev-envirdian-db:
+        image: mysql:5.7.22
+        container_name: dev-envirdian-db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "4307:3306"
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${ROOT_PASSWORD}
+        volumes:
+            - dev-envirdian-dbdata:/var/lib/mysql/
+            - /home/backend/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - dev-envirdian-app-network
+
+
+
+#Docker Networks
+networks:
+    dev-envirdian-app-network:
+        driver: bridge
+#Volumes
+volumes:
+    dev-envirdian-dbdata:
+        driver: local

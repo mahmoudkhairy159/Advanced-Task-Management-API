@@ -1,0 +1,77 @@
+stages:          # List of stages for jobs, and their order of execution
+
+  - deploy
+  - dev
+  - prod
+
+  
+deploy:      
+  stage: deploy  
+  environment: production
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "stg"'
+  script:
+    - sudo rsync -avu --delete --exclude ".git" --exclude ".env" . "/home/envirdian/backend/envirdian"
+    - sudo chown -R www-data:www-data /home/envirdian/backend/envirdian
+    - cd /home/envirdian/backend/envirdian
+    - sudo docker-compose build app
+    - sudo docker-compose up -d app
+    - sudo docker-compose exec -T app composer install
+    - sudo docker-compose exec -T app php artisan cache:clear
+    - sudo docker-compose exec -T app php artisan route:clear
+    - sudo docker-compose exec -T app php artisan module:migrate
+    - sudo docker-compose exec -T app php artisan optimize
+
+dev:      
+  stage: dev  
+  environment: development
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "dev"'
+  script:
+    - sudo rsync -avu --delete --exclude ".git" --exclude ".env" . "/home/envirdian/backend/dev-envirdian"
+    - sudo chown -R www-data:www-data /home/envirdian/backend/dev-envirdian
+    - cd /home/envirdian/backend/dev-envirdian
+    - sudo docker-compose -f docker-compose.dev.yml build dev-envirdian-app
+    - sudo docker-compose -f docker-compose.dev.yml up -d dev-envirdian-app
+    - sudo docker-compose -f docker-compose.dev.yml exec -T dev-envirdian-app composer install
+    - sudo docker-compose -f docker-compose.dev.yml exec -T dev-envirdian-app php artisan cache:clear
+    - sudo docker-compose -f docker-compose.dev.yml exec -T dev-envirdian-app php artisan route:clear
+    - sudo docker-compose -f docker-compose.dev.yml exec -T dev-envirdian-app php artisan module:migrate
+    - sudo docker-compose -f docker-compose.dev.yml exec -T dev-envirdian-app php artisan optimize
+    - sudo docker image prune -af
+
+
+prod:      
+  stage: prod  
+  environment: prod
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "prod"'
+  script:
+    - sudo rsync -avu --delete --exclude ".git" --exclude ".env" . "/home/envirdian/backend/prod-envirdian"
+    - sudo chown -R www-data:www-data /home/envirdian/backend/dev-envirdian
+    - cd /home/envirdian/backend/prod-envirdian
+    - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 280812518656.dkr.ecr.eu-west-1.amazonaws.com
+    - docker build -t geofika-backend .
+    - docker tag geofika-backend 280812518656.dkr.ecr.eu-west-1.amazonaws.com/geofika-backend:${CI_COMMIT_SHORT_SHA} 
+    - docker push 280812518656.dkr.ecr.eu-west-1.amazonaws.com/geofika-backend:${CI_COMMIT_SHORT_SHA} 
+    - docker image prune -af
+
+update_manifest:      
+  stage: prod
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "prod"'
+  dependencies:
+    - prod 
+  script:
+    - git config --global user.name "GitLab CI"
+    - git config --global user.email "ci@example.com"
+    - git clone https://gitlab-ci-token:${GITLAB_TOKEN}@gitlab.com/geofika/manifests.git
+    - cd manifests
+    - ls -ltrh
+    - echo ${CI_COMMIT_SHORT_SHA}
+    - version=$(cat environments/prod/geofika-backend/kustomization.yaml | grep 'newTag:' | awk '{print $2}')
+    - echo $version
+    - sed -i "s/${version}/${CI_COMMIT_SHORT_SHA}/g" environments/prod/geofika-backend/kustomization.yaml
+    - git add .
+    - git commit -m "Update geofika-backend docker image tag"
+    - git push origin main

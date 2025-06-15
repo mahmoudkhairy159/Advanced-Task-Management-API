@@ -1,0 +1,6 @@
+{
+    "Admin": true,
+    "User": true,
+    "UserNotification": true,
+    "Task": true
+}
