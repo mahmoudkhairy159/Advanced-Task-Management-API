@@ -11,6 +11,8 @@ class TaskDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            TaskSeeder::class,
+        ]);
     }
 }

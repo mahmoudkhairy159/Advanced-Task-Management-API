@@ -10,7 +10,7 @@ use Modules\Admin\App\Filters\AdminFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
-
+use Modules\Task\App\Models\Task;
 
 class Admin extends Authenticatable implements JWTSubject
 {
@@ -53,6 +53,11 @@ class Admin extends Authenticatable implements JWTSubject
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE)->where('blocked', self::STATUS_INACTIVE);
+    }
+
     /********************************** JWT Authentication ***************************************/
 
     /**
@@ -79,7 +84,7 @@ class Admin extends Authenticatable implements JWTSubject
 
     /********************************** Filterable ***********************************************/
 
-     public function modelFilter()
+    public function modelFilter()
     {
         return $this->provideFilter(AdminFilter::class);
     }
@@ -102,7 +107,7 @@ class Admin extends Authenticatable implements JWTSubject
      */
     protected function getImageUrlAttribute()
     {
-        return $this->image ? $this->getFileAttribute($this->image) :null;
+        return $this->image ? $this->getFileAttribute($this->image) : null;
     }
 
     /********************************** End Image Handling **************************************/
@@ -121,7 +126,6 @@ class Admin extends Authenticatable implements JWTSubject
 
     /********************************** End Mutators *********************************************/
 
-
     /********************************** Relationships ********************************************/
 
     /**
@@ -134,6 +138,29 @@ class Admin extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * Get all tasks assigned to the admin.
+     */
+    public function assignedTasks()
+    {
+        return $this->morphMany(Task::class, 'assignable');
+    }
+
+    /**
+     * Get all tasks created by the admin.
+     */
+    public function createdTasks()
+    {
+        return $this->morphMany(Task::class, 'creator');
+    }
+
+    /**
+     * Get all tasks updated by the admin.
+     */
+    public function updatedTasks()
+    {
+        return $this->morphMany(Task::class, 'updater');
+    }
 
     /**
      * Get permissions associated with the admin's role.
@@ -153,17 +180,6 @@ class Admin extends Authenticatable implements JWTSubject
      */
     public function hasPermission($permission)
     {
-
-        if ($this->role->permission_type == Role::PERMISSION_TYPE_ALL) {
-            return true;
-        }
-
-        if ($this->role->permission_type == Role::PERMISSION_TYPE_CUSTOM && !$this->role->permissions) {
-            return false;
-        }
-
-        return in_array($permission, $this->role->permissions);
+        return $this->permissions()->contains($permission);
     }
-
-
 }

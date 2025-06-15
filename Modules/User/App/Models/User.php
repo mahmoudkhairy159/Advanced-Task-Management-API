@@ -15,6 +15,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Cog\Contracts\Ban\Bannable as BannableInterface;
 use Cog\Laravel\Ban\Traits\Bannable;
 use Modules\UserNotification\App\Models\UserDatabaseNotification;
+use Modules\Task\App\Models\Task;
 
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail, BannableInterface
@@ -145,7 +146,29 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Banna
         return $this->hasOne(UserProfile::class, 'user_id');
     }
 
+    /**
+     * Get all tasks assigned to the user.
+     */
+    public function assignedTasks()
+    {
+        return $this->morphMany(Task::class, 'assignable');
+    }
 
+    /**
+     * Get all tasks created by the user.
+     */
+    public function createdTasks()
+    {
+        return $this->morphMany(Task::class, 'creator');
+    }
+
+    /**
+     * Get all tasks updated by the user.
+     */
+    public function updatedTasks()
+    {
+        return $this->morphMany(Task::class, 'updater');
+    }
 
     // OTP
     public function otps()

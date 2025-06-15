@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Article\App\Http\Controllers\Api\ArticleController;
+use Modules\Article\App\Http\Controllers\Admin\ArticleCategoryController;
+use Modules\Article\App\Http\Controllers\Admin\ArticleController;
+use Modules\Article\App\Http\Controllers\Admin\ArticleFactController;
 use Modules\Task\App\Http\Controllers\Admin\TaskController;
 
 /*
@@ -15,7 +17,9 @@ use Modules\Task\App\Http\Controllers\Admin\TaskController;
     |
 */
 
-Route::prefix('v1')->name('user-api.')->group(function () {
+Route::prefix('v1')->name('admin-api.')->group(function () {
+
+
 
     // tasks routes
     /***********Trashed tasks SoftDeletes**************/
@@ -29,6 +33,6 @@ Route::prefix('v1')->name('user-api.')->group(function () {
 
     Route::apiResource('tasks', TaskController::class);
     // tasks routes
-
+    
 
 });
