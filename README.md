@@ -15,7 +15,6 @@ This API provides a complete task management solution with user authentication, 
 - **Modular Architecture**: Clean separation of concerns with Laravel Modules
 - **Advanced Authentication**: JWT-based auth with refresh tokens and OTP verification
 - **Comprehensive API Documentation**: Interactive Swagger/OpenAPI 3.0 documentation
-- **Production Ready**: Dockerized deployment with CI/CD pipeline
 
 ## ✨ Key Features
 
