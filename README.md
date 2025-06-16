@@ -44,9 +44,7 @@ This API provides a complete task management solution with user authentication, 
 - **Interactive API Documentation** (Swagger UI)
 - **Postman Collection** with auto-token management
 - **Comprehensive Test Suite** with PHPUnit
-- **Docker Development Environment**
-- **GitLab CI/CD Pipeline** ready
-- **Code Quality Tools** (Laravel Pint, PHPStan)
+
 
 ## 🏗 **Architecture & Design Decisions**
 
