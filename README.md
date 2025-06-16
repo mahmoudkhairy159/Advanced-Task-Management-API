@@ -141,7 +141,9 @@ DB_PASSWORD=your_password
 
 5. **Run migrations and seeders**
 ```bash
-php artisan migrate --seed
+php artisan optimize
+php artisan module:migrate-fresh --all
+php artisan module:seed --all
 ```
 
 6. **Generate API documentation**
