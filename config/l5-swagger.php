@@ -5,9 +5,18 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'L5 Swagger UI',
+                'title' => 'Advanced Task Management API Documentation',
+                'version' => '1.0.0',
+                'description' => 'Comprehensive API documentation for the Advanced Task Management System',
+                'contact' => [
+                    'name' => 'API Support',
+                    'email' => 'support@taskmanagement.com',
+                ],
+                'license' => [
+                    'name' => 'MIT',
+                    'url' => 'https://opensource.org/licenses/MIT',
+                ],
             ],
-
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
@@ -21,8 +30,8 @@ return [
                 'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
 
                 /*
-                * Edit to set path where swagger ui assets should be stored
-                */
+                 * Edit to set path where swagger ui assets should be stored
+                 */
                 'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
 
                 /*
@@ -45,6 +54,290 @@ return [
                  */
                 'annotations' => [
                     base_path('app'),
+                    base_path('Modules'),
+                ],
+                'views' => base_path('resources/views/vendor/l5-swagger'),
+                'base' => env('L5_SWAGGER_BASE_PATH', null),
+                'excludes' => [],
+            ],
+            'scanOptions' => [
+                /**
+                 * Configuration for default processors. Allows to pass processors configuration to swagger-php.
+                 *
+                 * @link https://zircote.github.io/swagger-php/reference/processors.html
+                 */
+                'default_processors_configuration' => [],
+
+                /**
+                 * analyser: defaults to \OpenApi\StaticAnalyser .
+                 *
+                 * @see \OpenApi\scan
+                 */
+                'analyser' => null,
+
+                /**
+                 * analysis: defaults to a new \OpenApi\Analysis .
+                 *
+                 * @see \OpenApi\scan
+                 */
+                'analysis' => null,
+
+                /**
+                 * Custom query path processors classes.
+                 *
+                 * @link https://github.com/zircote/swagger-php/tree/master/Examples/processors/schema-query-parameter
+                 * @see \OpenApi\scan
+                 */
+                'processors' => [
+                    new \OpenApi\Processors\DocBlockDescriptions(),
+                    new \OpenApi\Processors\MergeIntoOpenApi(),
+                    new \OpenApi\Processors\MergeIntoComponents(),
+                    new \OpenApi\Processors\ExpandClasses(),
+                    new \OpenApi\Processors\ExpandInterfaces(),
+                    new \OpenApi\Processors\ExpandTraits(),
+                    new \OpenApi\Processors\ExpandEnums(),
+                    new \OpenApi\Processors\AugmentSchemas(),
+                    new \OpenApi\Processors\AugmentProperties(),
+                    new \OpenApi\Processors\BuildPaths(),
+                    new \OpenApi\Processors\AugmentParameters(),
+                    new \OpenApi\Processors\AugmentRefs(),
+                    new \OpenApi\Processors\MergeJsonContent(),
+                    new \OpenApi\Processors\MergeXmlContent(),
+                    new \OpenApi\Processors\OperationId(),
+                    new \OpenApi\Processors\CleanUnmerged(),
+                ],
+
+                /**
+                 * pattern: string       $pattern File pattern(s) to scan (default: *.php) .
+                 *
+                 * @see \OpenApi\scan
+                 */
+                'pattern' => null,
+
+                /*
+                 * Absolute path to directories that should be excluded from scanning
+                 * @note This option overwrites `paths.excludes`
+                 * @see \OpenApi\scan
+                 */
+                'exclude' => [],
+
+                /*
+                 * Allows to generate specs either for OpenAPI 3.0.0 or OpenAPI 3.1.0.
+                 * By default the spec will be in version 3.0.0
+                 */
+                'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', '3.0.0'),
+            ],
+            'securityDefinitions' => [
+                'sanctum' => [
+                    'type' => 'apiKey',
+                    'description' => 'Enter token in format (Bearer <token>)',
+                    'name' => 'Authorization',
+                    'in' => 'header',
+                ],
+                'jwt' => [
+                    'type' => 'apiKey',
+                    'description' => 'Enter token in format (Bearer <token>)',
+                    'name' => 'Authorization',
+                    'in' => 'header',
+                ],
+            ],
+            'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', false),
+            'generate_yaml_copy' => env('L5_SWAGGER_GENERATE_YAML_COPY', false),
+            'proxy' => false,
+            'additional_config_url' => null,
+            'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null),
+            'validator_url' => null,
+            'ui' => [
+                'display' => [
+                    'dark_mode' => env('L5_SWAGGER_UI_DARK_MODE', false),
+                    /*
+                     * Controls the default expansion setting for the operations and tags. It can be :
+                     * 'list' (expands only the tags),
+                     * 'full' (expands the tags and operations),
+                     * 'none' (expands nothing).
+                     */
+                    'doc_expansion' => env('L5_SWAGGER_UI_DOC_EXPANSION', 'none'),
+
+                    /**
+                     * If set, enables filtering. The top bar will show an edit box that
+                     * you can use to filter the tagged operations that are shown. Can be
+                     * Boolean to enable or disable, or a string, in which case filtering
+                     * will be enabled using that string as the filter expression. Filtering
+                     * is case-sensitive matching the filter expression anywhere inside
+                     * the tag.
+                     */
+                    'filter' => env('L5_SWAGGER_UI_FILTERS', true), // true | false
+                ],
+                'authorization' => [
+                    /*
+                     * If set to true, it persists authorization data, and it would not be lost on browser close/refresh
+                     */
+                    'persist_authorization' => env('L5_SWAGGER_UI_PERSIST_AUTHORIZATION', false),
+                ],
+            ],
+        ],
+        'user-api' => [
+            'api' => [
+                'title' => 'User API Documentation',
+                'version' => '1.0.0',
+                'description' => 'User-facing API endpoints for task management',
+                'contact' => [
+                    'name' => 'API Support',
+                    'email' => 'support@taskmanagement.com',
+                ],
+                'license' => [
+                    'name' => 'MIT',
+                    'url' => 'https://opensource.org/licenses/MIT',
+                ],
+            ],
+            'routes' => [
+                'api' => 'api/user-documentation',
+            ],
+            'paths' => [
+                'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
+                'docs_json' => 'user-api-docs.json',
+                'docs_yaml' => 'user-api-docs.yaml',
+                'format_to_use_for_docs' => env('L5_FORMAT_TO_USE_FOR_DOCS', 'json'),
+                'annotations' => [
+                    base_path('Modules/User/App/Http/Controllers/Api'),
+                    base_path('Modules/Task/App/Http/Controllers/Api'),
+                    base_path('app/Http/Controllers/Api'),
+                ],
+                'views' => base_path('resources/views/vendor/l5-swagger'),
+                'base' => env('L5_SWAGGER_BASE_PATH', null),
+                'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
+                'excludes' => [],
+            ],
+            'scanOptions' => [
+                'analyser' => null,
+                'analysis' => null,
+                'processors' => [
+                    new \OpenApi\Processors\DocBlockDescriptions(),
+                    new \OpenApi\Processors\MergeIntoOpenApi(),
+                    new \OpenApi\Processors\MergeIntoComponents(),
+                    new \OpenApi\Processors\ExpandClasses(),
+                    new \OpenApi\Processors\ExpandInterfaces(),
+                    new \OpenApi\Processors\ExpandTraits(),
+                    new \OpenApi\Processors\ExpandEnums(),
+                    new \OpenApi\Processors\AugmentSchemas(),
+                    new \OpenApi\Processors\AugmentProperties(),
+                    new \OpenApi\Processors\BuildPaths(),
+                    new \OpenApi\Processors\AugmentParameters(),
+                    new \OpenApi\Processors\AugmentRefs(),
+                    new \OpenApi\Processors\MergeJsonContent(),
+                    new \OpenApi\Processors\MergeXmlContent(),
+                    new \OpenApi\Processors\OperationId(),
+                    new \OpenApi\Processors\CleanUnmerged(),
+                ],
+                'pattern' => null,
+                'exclude' => [],
+                'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', '3.0.0'),
+            ],
+            'securityDefinitions' => [
+                'jwt' => [
+                    'type' => 'apiKey',
+                    'description' => 'Enter token in format (Bearer <token>)',
+                    'name' => 'Authorization',
+                    'in' => 'header',
+                ],
+            ],
+            'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', false),
+            'generate_yaml_copy' => env('L5_SWAGGER_GENERATE_YAML_COPY', false),
+            'proxy' => false,
+            'additional_config_url' => null,
+            'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null),
+            'validator_url' => null,
+            'ui' => [
+                'display' => [
+                    'dark_mode' => env('L5_SWAGGER_UI_DARK_MODE', false),
+                    'doc_expansion' => env('L5_SWAGGER_UI_DOC_EXPANSION', 'none'),
+                    'filter' => env('L5_SWAGGER_UI_FILTERS', true),
+                ],
+                'authorization' => [
+                    'persist_authorization' => env('L5_SWAGGER_UI_PERSIST_AUTHORIZATION', false),
+                ],
+            ],
+        ],
+        'admin-api' => [
+            'api' => [
+                'title' => 'Admin API Documentation',
+                'version' => '1.0.0',
+                'description' => 'Administrative API endpoints for system management',
+                'contact' => [
+                    'name' => 'API Support',
+                    'email' => 'support@taskmanagement.com',
+                ],
+                'license' => [
+                    'name' => 'MIT',
+                    'url' => 'https://opensource.org/licenses/MIT',
+                ],
+            ],
+            'routes' => [
+                'api' => 'api/admin-documentation',
+            ],
+            'paths' => [
+                'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
+                'docs_json' => 'admin-api-docs.json',
+                'docs_yaml' => 'admin-api-docs.yaml',
+                'format_to_use_for_docs' => env('L5_FORMAT_TO_USE_FOR_DOCS', 'json'),
+                'annotations' => [
+                    base_path('Modules/User/App/Http/Controllers/Admin'),
+                    base_path('Modules/Task/App/Http/Controllers/Admin'),
+                    base_path('Modules/Admin/App/Http/Controllers'),
+                    base_path('app/Http/Controllers/Admin'),
+                ],
+                'views' => base_path('resources/views/vendor/l5-swagger'),
+                'base' => env('L5_SWAGGER_BASE_PATH', null),
+                'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
+                'excludes' => [],
+            ],
+            'scanOptions' => [
+                'analyser' => null,
+                'analysis' => null,
+                'processors' => [
+                    new \OpenApi\Processors\DocBlockDescriptions(),
+                    new \OpenApi\Processors\MergeIntoOpenApi(),
+                    new \OpenApi\Processors\MergeIntoComponents(),
+                    new \OpenApi\Processors\ExpandClasses(),
+                    new \OpenApi\Processors\ExpandInterfaces(),
+                    new \OpenApi\Processors\ExpandTraits(),
+                    new \OpenApi\Processors\ExpandEnums(),
+                    new \OpenApi\Processors\AugmentSchemas(),
+                    new \OpenApi\Processors\AugmentProperties(),
+                    new \OpenApi\Processors\BuildPaths(),
+                    new \OpenApi\Processors\AugmentParameters(),
+                    new \OpenApi\Processors\AugmentRefs(),
+                    new \OpenApi\Processors\MergeJsonContent(),
+                    new \OpenApi\Processors\MergeXmlContent(),
+                    new \OpenApi\Processors\OperationId(),
+                    new \OpenApi\Processors\CleanUnmerged(),
+                ],
+                'pattern' => null,
+                'exclude' => [],
+                'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', '3.0.0'),
+            ],
+            'securityDefinitions' => [
+                'jwt' => [
+                    'type' => 'apiKey',
+                    'description' => 'Enter token in format (Bearer <token>)',
+                    'name' => 'Authorization',
+                    'in' => 'header',
+                ],
+            ],
+            'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', false),
+            'generate_yaml_copy' => env('L5_SWAGGER_GENERATE_YAML_COPY', false),
+            'proxy' => false,
+            'additional_config_url' => null,
+            'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null),
+            'validator_url' => null,
+            'ui' => [
+                'display' => [
+                    'dark_mode' => env('L5_SWAGGER_UI_DARK_MODE', false),
+                    'doc_expansion' => env('L5_SWAGGER_UI_DOC_EXPANSION', 'none'),
+                    'filter' => env('L5_SWAGGER_UI_FILTERS', true),
+                ],
+                'authorization' => [
+                    'persist_authorization' => env('L5_SWAGGER_UI_PERSIST_AUTHORIZATION', false),
                 ],
             ],
         ],
@@ -107,18 +400,7 @@ return [
              *
              * @link https://zircote.github.io/swagger-php/reference/processors.html
              */
-            'default_processors_configuration' => [
-            /** Example */
-            /**
-             * 'operationId.hash' => true,
-             * 'pathFilter' => [
-             * 'tags' => [
-             * '/pets/',
-             * '/store/',
-             * ],
-             * ],.
-             */
-            ],
+            'default_processors_configuration' => [],
 
             /**
              * analyser: defaults to \OpenApi\StaticAnalyser .
@@ -167,7 +449,7 @@ return [
 
         /*
          * API security definitions. Will be generated into documentation file.
-        */
+         */
         'securityDefinitions' => [
             'securitySchemes' => [
                 /*
@@ -312,7 +594,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost'),
         ],
     ],
 ];

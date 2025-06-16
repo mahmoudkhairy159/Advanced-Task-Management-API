@@ -85,6 +85,7 @@ class TaskServiceProvider extends ServiceProvider
             $this->loadJsonTranslationsFrom(module_path($this->name, 'lang'));
         }
     }
+    
 
     /**
      * Register config.
