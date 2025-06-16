@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Task\App\Http\Controllers\Admin\TaskController;
+use Modules\Task\App\Http\Controllers\Api\TaskController;
 
 /*
     |--------------------------------------------------------------------------
@@ -23,6 +23,7 @@ Route::prefix('v1')->name('user-api.')->group(function () {
         Route::delete('/force-delete/{id}', 'forceDelete')->name('forceDelete');
         Route::post('/restore/{id}', 'restore')->name('restore');
     });
+    Route::patch('/tasks/{id}/status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 
     /***********Trashed tasks SoftDeletes**************/
 

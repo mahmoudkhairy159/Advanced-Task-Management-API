@@ -19,20 +19,7 @@ class UserFilter extends ModelFilter
         return $this->where('status', $status);
 
     }
-    public function countryId($countryId)
-    {
-        return $this->where('country_id', $countryId);
-
-    }
-    public function cityId($cityId)
-    {
-        return $this->where('city_id', $cityId);
-
-    }
-    public function nationalityId($nationalityId)
-    {
-        return $this->where('nationality_id', $nationalityId);
-    }
+   
 
 
 

@@ -33,7 +33,7 @@ class UpdateUserRequest extends FormRequest
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5000'],
             //userProfile
             'bio' => ['nullable', 'string', 'min:3', 'max:256'],
-            'language' => ['nullable', Rule::in(core()->getSupportedLocales())],
+            'language' => ['nullable', Rule::in(array_keys(core()->getSupportedLocales()))],
             'mode' => ['nullable', Rule::in(['dark', 'light', 'device_mode'])],
             'sound_effects' => ['nullable', Rule::in(['on', 'off'])],
             'allow_related_notifications' => ['required', Rule::in(['on', 'off'])],

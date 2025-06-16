@@ -6,15 +6,12 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
-use Modules\User\App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
 use Modules\User\App\Http\Requests\Api\ForgotPassword\ForgotPasswordRequest;
 use Modules\User\App\Http\Requests\Api\ForgotPassword\ForgotPasswordResentCodeRequest;
 use Modules\User\App\Traits\UserOtpTrait;
 use Modules\User\App\Repositories\UserRepository;
-use Modules\User\App\Notifications\UserResetPasswordNotification;
 
 class ForgotPasswordController extends Controller
 {

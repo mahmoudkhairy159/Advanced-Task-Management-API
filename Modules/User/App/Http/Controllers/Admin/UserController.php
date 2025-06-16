@@ -72,14 +72,8 @@ class UserController extends Controller
                 'phone_code',
                 'status',
                 'blocked',
-                'nationality_id',
-                'country_id',
-                'city_id',
-                'educational_level_id',
-                'professional_specialization_id',
                 'password',
                 'image',
-                'resume',
             );
             $userProfileData = $request->only(
                 'bio',
@@ -90,11 +84,6 @@ class UserController extends Controller
                 'send_email_notifications',
                 'gender',
                 'birth_date',
-                'university',
-                'current_company_name',
-                'current_job_type',
-                'current_job_position',
-                'political_affiliations',
             );
             $userData['created_by'] = auth()->guard($this->guard)->id();
             $userCreated = $this->userRepository->createOneByAdmin($userData, $userProfileData);

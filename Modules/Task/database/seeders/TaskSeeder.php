@@ -96,7 +96,8 @@ class TaskSeeder extends Seeder
                 'updater_id' => $admins[0]->id,
             ],
         ];
-
-        Task::insert($tasks);
+        foreach ($tasks as $task) {
+            Task::create($task);
+        }
     }
 }

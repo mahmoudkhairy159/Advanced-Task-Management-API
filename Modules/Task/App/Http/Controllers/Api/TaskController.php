@@ -6,12 +6,13 @@ use Exception;
 use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Modules\Task\App\Http\Requests\Admin\Task\UpdateTaskStatusRequest;
+use Modules\Task\App\Http\Requests\Api\Task\UpdateTaskStatusRequest;
 use Modules\Task\App\Http\Requests\Api\Task\StoreTaskRequest;
 use Modules\Task\App\Http\Requests\Api\Task\UpdateTaskRequest;
 use Modules\Task\App\Repositories\TaskRepository;
 use Modules\Task\App\Transformers\Admin\Task\TaskResource;
 use Modules\Task\App\Transformers\Api\Task\TaskCollection;
+use Modules\User\App\Models\User;
 
 class TaskController extends Controller
 {
@@ -25,8 +26,6 @@ class TaskController extends Controller
 
     public function __construct(TaskRepository $taskRepository)
     {
-
-
         $this->guard = 'user-api';
 
         Auth::setDefaultDriver($this->guard);
@@ -38,6 +37,7 @@ class TaskController extends Controller
     public function index()
     {
         try {
+            request()->merge(['assignable_type' => User::class]);
             $data = $this->taskRepository->getAll()->paginate();
             return $this->successResponse(new TaskCollection($data));
         } catch (Exception $e) {
@@ -88,8 +88,9 @@ class TaskController extends Controller
     public function show($id)
     {
         try {
+
             $data = $this->taskRepository->getOneById($id);
-            if (!$data) {
+            if (!$data || $data->assignable_type !== User::class) {
                 return $this->errorResponse(
                     [],
                     __('app.data-not-found'),
@@ -124,10 +125,9 @@ class TaskController extends Controller
                     200
                 );
             } {
-                return $this->messageResponse(
-                    __("task::app.tasks.updated-failed"),
-                    false,
-                    400
+                return $this->errorResponse(
+                    __("task::app.tasks.not-authorized-to-update"),
+                    403
                 );
             }
         } catch (Exception $e) {
@@ -145,7 +145,22 @@ class TaskController extends Controller
     public function updateStatus(UpdateTaskStatusRequest $request, $id)
     {
         try {
-            $task = $this->taskRepository->findOrFail($id);
+            $task = $this->taskRepository->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('assignable_id', Auth::id())
+                        ->where('assignable_type', get_class(Auth::user()));
+                })->orWhere(function ($q) {
+                    $q->where('creator_id', Auth::id())
+                        ->where('creator_type', get_class(Auth::user()));
+                });
+            })->findOrFail($id);
+            if (!$task) {
+                return $this->errorResponse(
+                    [],
+                    __('app.data-not-found'),
+                    404
+                );
+            }
             $data = $request->validated();
             $updated = $this->taskRepository->updateStatus($data, $task);
 
@@ -157,7 +172,7 @@ class TaskController extends Controller
                 );
             } {
                 return $this->messageResponse(
-                    __("task::app.tasks.updated-failed"),
+                    __("task::app.tasks.not-authorized-to-update"),
                     false,
                     400
                 );
@@ -177,7 +192,7 @@ class TaskController extends Controller
     public function destroy($id)
     {
         try {
-            $deleted = $this->taskRepository->delete($id);
+            $deleted = $this->taskRepository->deleteOne($id);
             if ($deleted) {
                 return $this->messageResponse(
                     __("task::app.tasks.deleted-successfully"),
@@ -186,7 +201,7 @@ class TaskController extends Controller
                 );
             } {
                 return $this->messageResponse(
-                    __("task::app.tasks.deleted-failed"),
+                    __("task::app.tasks.not-authorized-to-delete"),
                     false,
                     400
                 );

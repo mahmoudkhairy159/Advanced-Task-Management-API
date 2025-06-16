@@ -3,6 +3,7 @@
 namespace Modules\User\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Task\database\seeders\TaskSeeder;
 
 class UserDatabaseSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class UserDatabaseSeeder extends Seeder
     {
         $this->call([
              UserSeeder::class,
+            TaskSeeder::class,
+
         ]);
     }
 }

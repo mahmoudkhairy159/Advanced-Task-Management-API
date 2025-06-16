@@ -92,6 +92,10 @@ class TaskServiceProvider extends ServiceProvider
 
                     $this->publishes([$file->getPathname() => config_path($relativePath)], 'config');
                     $this->mergeConfigFrom($file->getPathname(), $key);
+                    $this->mergeConfigFrom(
+                        module_path($this->name, 'config/acl.php'),
+                        'acl'
+                    );
                 }
             }
         }

@@ -17,7 +17,7 @@ class UpdateUserProfileRequest extends FormRequest
         return [
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5000'],
             'bio' => ['nullable', 'string', 'min:3', 'max:256'],
-            'language' => ['nullable', 'string'],
+            'language' => ['nullable', Rule::in(array_keys(core()->getSupportedLocales()))],
             'mode' => ['required', Rule::in(['dark', 'light', 'device_mode'])],
         ];
     }

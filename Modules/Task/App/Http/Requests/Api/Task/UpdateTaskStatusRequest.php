@@ -8,6 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Modules\Task\App\Enums\TaskStatusEnum;
+use Modules\Task\App\Models\Task;
 use Modules\User\App\Models\User;
 
 class UpdateTaskStatusRequest extends FormRequest
@@ -25,7 +26,7 @@ class UpdateTaskStatusRequest extends FormRequest
                     // Only validate if trying to set status to completed
                     if ($value === TaskStatusEnum::STATUS_COMPLETED) {
                         // Get the current task status from database
-                        $task = $this->route('task');
+                        $task = Task::find($this->route('task'));
                         if ($task && $task->status !== TaskStatusEnum::STATUS_IN_PROGRESS) {
                             $fail('Task status can only be set to completed when it is currently in progress.');
                         }

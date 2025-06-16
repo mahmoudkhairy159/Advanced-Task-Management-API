@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use  Modules\User\App\Http\Requests\Api\Auth\UserLoginRequest;
 use Modules\User\App\Models\User;
 use Modules\User\App\Repositories\UserRepository;
-use Modules\User\App\resources\Api\User\UserResource;
+use Modules\User\App\Transformers\Api\User\UserResource;
 use Modules\User\App\Traits\UserOtpTrait;
 
 class LoginController extends Controller

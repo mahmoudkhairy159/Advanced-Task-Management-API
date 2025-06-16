@@ -46,6 +46,7 @@ class TaskController extends Controller
             $data = $this->taskRepository->getAll()->paginate();
             return $this->successResponse(new TaskCollection($data));
         } catch (Exception $e) {
+            dd($e->getMessage());
             return $this->errorResponse(
                 [],
                 __('app.something-went-wrong'),
@@ -62,7 +63,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         try {
-            $data =  $request->validated();
+            $data = $request->validated();
             $created = $this->taskRepository->createOne($data);
 
             if ($created) {
@@ -119,7 +120,7 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, $id)
     {
         try {
-            $data =  $request->validated();
+            $data = $request->validated();
             $updated = $this->taskRepository->updateOne($data, $id);
 
             if ($updated) {
@@ -149,7 +150,22 @@ class TaskController extends Controller
     public function updateStatus(UpdateTaskStatusRequest $request, $id)
     {
         try {
-            $task = $this->taskRepository->findOrFail($id);
+            $task = $this->taskRepository->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('assignable_id', Auth::id())
+                        ->where('assignable_type', get_class(Auth::user()));
+                })->orWhere(function ($q) {
+                    $q->where('creator_id', Auth::id())
+                        ->where('creator_type', get_class(Auth::user()));
+                });
+            })->findOrFail($id);
+            if (!$task) {
+                return $this->errorResponse(
+                    [],
+                    __('app.data-not-found'),
+                    404
+                );
+            }
             $data = $request->validated();
             $updated = $this->taskRepository->updateStatus($data, $task);
 

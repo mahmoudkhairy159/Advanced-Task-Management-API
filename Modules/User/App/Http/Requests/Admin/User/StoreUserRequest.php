@@ -16,6 +16,8 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $supportedLocales = array_keys(core()->getSupportedLocales());
+
         return [
             //user data validation
             'name' => ['required', 'string', 'min:3', 'max:256',],
@@ -36,15 +38,13 @@ class StoreUserRequest extends FormRequest
 
             //userProfile
             'bio' => ['nullable', 'string', 'min:3', 'max:256'],
-            'language' => ['nullable', Rule::in(core()->getSupportedLocales())],
+            'language' => ['nullable', Rule::in($supportedLocales)],
             'mode' => ['nullable', Rule::in(['dark', 'light'])],
             'sound_effects' => ['required', Rule::in(['on', 'off'])],
             'allow_related_notifications' => ['required', Rule::in(['on', 'off'])],
             'send_email_notifications' => ['required', Rule::in(['on', 'off'])],
             'gender' => ['nullable', 'string', Rule::in(['Male', 'Female', 'Non-binary', 'Prefer not to say'])],
             'birth_date' => ['nullable', 'date'],
-
-
         ];
     }
 
@@ -55,6 +55,7 @@ class StoreUserRequest extends FormRequest
     {
         return true;
     }
+
     /**
      * Custom validation rule for ensuring phone_code and phone combination is unique.
      */
@@ -71,6 +72,7 @@ class StoreUserRequest extends FormRequest
             }
         }
     }
+
     /**
      * Handle a failed validation attempt.
      *

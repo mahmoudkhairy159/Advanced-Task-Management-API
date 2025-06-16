@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Modules\Task\App\Enums\TaskPriorityEnum;
 use Modules\Task\App\Enums\TaskStatusEnum;
+use Modules\Task\App\Models\Task;
 use Modules\User\App\Models\User;
 
 class UpdateTaskRequest extends FormRequest
@@ -30,7 +31,7 @@ class UpdateTaskRequest extends FormRequest
                     // Only validate if trying to set status to completed
                     if ($value === TaskStatusEnum::STATUS_COMPLETED) {
                         // Get the current task status from database
-                        $task = $this->route('task');
+                        $task = Task::find($this->route('task'));
                         if ($task && $task->status !== TaskStatusEnum::STATUS_IN_PROGRESS) {
                             $fail('Task status can only be set to completed when it is currently in progress.');
                         }
@@ -39,8 +40,6 @@ class UpdateTaskRequest extends FormRequest
             ],
             'assignable_id' => ['required', 'exists:users,id'],
             'assignable_type' => ['required', 'string', 'in:' . User::class],
-            'creator_id' => ['required', 'exists:users,id'],
-            'creator_type' => ['required', 'string', 'in:' . User::class],
             'updater_id' => ['required', 'exists:users,id'],
             'updater_type' => ['required', 'string', 'in:' . User::class],
         ];

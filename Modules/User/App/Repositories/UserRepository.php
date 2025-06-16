@@ -221,23 +221,8 @@ class UserRepository extends BaseRepository
             return $user->load([
                 'profile',
                 'phone',
-                'educationalLevel',
-                'professionalSpecialization',
-                'interests',
-                'spokenLanguages',
                 'userFiles',
-                'nationality' => function ($query) {
-                    $query->select('id', 'code')->withTranslation();
-                },
-                'country' => function ($query) {
-                    $query->select('id', 'code')->withTranslation();
-                },
-                'city' => function ($query) {
-                    $query->select('cities.id', 'cities.state_id')->withTranslation();
-                },
-                'state' => function ($query) {
-                    $query->select('states.id')->withTranslation();
-                },
+
             ]);
         } catch (\Throwable $th) {
             dd(vars: $th->getMessage());
@@ -376,7 +361,7 @@ class UserRepository extends BaseRepository
             return false;
         }
     }
-    
+
     public function getFileType($file)
     {
         if (in_array($file->getClientOriginalExtension(), ['jpeg', 'png', 'jpg', 'gif'])) {

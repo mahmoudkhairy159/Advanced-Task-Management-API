@@ -25,6 +25,7 @@ Route::prefix('v1')->name('admin-api.')->group(function () {
         Route::delete('/force-delete/{id}', 'forceDelete')->name('forceDelete');
         Route::post('/restore/{id}', 'restore')->name('restore');
     });
+    Route::patch('/tasks/{id}/status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 
     /***********Trashed tasks SoftDeletes**************/
 

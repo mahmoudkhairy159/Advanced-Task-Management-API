@@ -19,6 +19,7 @@ class AdminRepository extends BaseRepository
     public function getAll()
     {
         return $this->model
+            ->with('role')
             ->filter(request()->all())
             ->orderBy('created_at', 'desc');
     }

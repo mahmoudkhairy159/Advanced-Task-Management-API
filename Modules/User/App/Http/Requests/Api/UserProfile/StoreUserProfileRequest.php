@@ -18,7 +18,7 @@ class StoreUserProfileRequest extends FormRequest
         return [
             'image'=>['nullable','image','mimes:jpeg,png,jpg,gif', 'max:5000'],
             'bio'=>['nullable','string', 'min:3', 'max:256'],
-            'language'=>['required',Rule::in(core()->getSupportedLocales())],
+            'language'=>['required',Rule::in(array_keys(core()->getSupportedLocales()))],
             'mode'=>['required',Rule::in(['dark','light','device_mode'])],
         ];
     }

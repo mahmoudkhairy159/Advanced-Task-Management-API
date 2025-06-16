@@ -26,8 +26,6 @@ class UserResource extends JsonResource
             'status'        => $this->status,
             'active'        => $this->active,
             'blocked'        => $this->blocked,
-            'type'        => $this->type,
-            'type_value'        => $this->type_value,
             'created_at'    => $this->created_at,
             'updated_at'    => $this->updated_at,
             'verified_at' => $this->verified_at,

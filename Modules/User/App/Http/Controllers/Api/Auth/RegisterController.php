@@ -11,9 +11,9 @@ use  Modules\User\App\Http\Requests\Api\Auth\UserRegisterRequest;
 use Modules\User\App\Repositories\OtpRepository;
 use Modules\User\App\Repositories\UserProfileRepository;
 use Modules\User\App\Repositories\UserRepository;
-use Modules\User\App\resources\Api\User\UserResource;
+use Modules\User\App\Transformers\Api\User\UserResource;
 use Modules\User\App\Traits\UserOtpTrait;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class RegisterController extends Controller
 {

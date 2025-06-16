@@ -18,6 +18,8 @@ return [
         "updated-failed" => "Task updated failed",
         "deleted-failed" => "Task deleted failed",
         "restored-failed" => "Task restored failed",
+        "not-authorized-to-update" => "You are not authorized to update this task. Only the task creator or assigned user can update it.",
+        "not-authorized-to-delete" => "You are not authorized to delete this task. Only the task creator user can delete it.",
     ],
 
 

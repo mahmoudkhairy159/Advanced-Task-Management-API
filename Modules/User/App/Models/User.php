@@ -14,7 +14,6 @@ use Modules\User\App\Filters\UserFilter;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Cog\Contracts\Ban\Bannable as BannableInterface;
 use Cog\Laravel\Ban\Traits\Bannable;
-use Modules\UserNotification\App\Models\UserDatabaseNotification;
 use Modules\Task\App\Models\Task;
 
 
@@ -184,10 +183,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Banna
     /*********************************End Relationships*******************************************/
 
 
-    public function notifications()
-    {
-        return $this->morphMany(UserDatabaseNotification::class, 'notifiable')->latest();
-    }
+
 
 
     public function userFiles()
