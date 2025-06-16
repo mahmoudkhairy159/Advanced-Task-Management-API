@@ -31,7 +31,6 @@ This API provides a complete task management solution with user authentication, 
 - **Advanced Filtering & Pagination** 
 - **Task Status Management** with workflow tracking
 - **Soft Delete System** with trash/restore functionality
-- **Bulk Operations** for efficient task management
 - **User Assignment** and collaboration features
 
 ### 👥 **User & Admin Management**
