@@ -19,9 +19,34 @@ return [
             ],
             'routes' => [
                 /*
+                 * Route for accessing parsed swagger annotations.
+                 */
+                'docs' => 'docs',
+
+                /*
                  * Route for accessing api documentation interface
                  */
                 'api' => 'api/documentation',
+
+                /*
+                 * Route for Oauth2 authentication callback.
+                 */
+                'oauth2_callback' => 'api/oauth2-callback',
+
+                /*
+                 * Middleware allows to prevent unexpected access to API documentation
+                 */
+                'middleware' => [
+                    'api' => [],
+                    'asset' => [],
+                    'docs' => [],
+                    'oauth2_callback' => [],
+                ],
+
+                /*
+                 * Route Group options
+                 */
+                'group_options' => [],
             ],
             'paths' => [
                 /*
@@ -53,8 +78,10 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                  */
                 'annotations' => [
-                    base_path('app'),
-                    base_path('Modules'),
+                    base_path('app/Http/Controllers'),
+                    base_path('Modules/User/App/Http/Controllers'),
+                    base_path('Modules/Task/App/Http/Controllers'),
+                    base_path('Modules/Admin/App/Http/Controllers'),
                 ],
                 'views' => base_path('resources/views/vendor/l5-swagger'),
                 'base' => env('L5_SWAGGER_BASE_PATH', null),
@@ -84,28 +111,12 @@ return [
 
                 /**
                  * Custom query path processors classes.
+                 * Empty array to use default processors (avoids serialization issues)
                  *
                  * @link https://github.com/zircote/swagger-php/tree/master/Examples/processors/schema-query-parameter
                  * @see \OpenApi\scan
                  */
-                'processors' => [
-                    new \OpenApi\Processors\DocBlockDescriptions(),
-                    new \OpenApi\Processors\MergeIntoOpenApi(),
-                    new \OpenApi\Processors\MergeIntoComponents(),
-                    new \OpenApi\Processors\ExpandClasses(),
-                    new \OpenApi\Processors\ExpandInterfaces(),
-                    new \OpenApi\Processors\ExpandTraits(),
-                    new \OpenApi\Processors\ExpandEnums(),
-                    new \OpenApi\Processors\AugmentSchemas(),
-                    new \OpenApi\Processors\AugmentProperties(),
-                    new \OpenApi\Processors\BuildPaths(),
-                    new \OpenApi\Processors\AugmentParameters(),
-                    new \OpenApi\Processors\AugmentRefs(),
-                    new \OpenApi\Processors\MergeJsonContent(),
-                    new \OpenApi\Processors\MergeXmlContent(),
-                    new \OpenApi\Processors\OperationId(),
-                    new \OpenApi\Processors\CleanUnmerged(),
-                ],
+                'processors' => [],
 
                 /**
                  * pattern: string       $pattern File pattern(s) to scan (default: *.php) .
@@ -119,7 +130,11 @@ return [
                  * @note This option overwrites `paths.excludes`
                  * @see \OpenApi\scan
                  */
-                'exclude' => [],
+                'exclude' => [
+                    base_path('database'),
+                    base_path('Modules/*/database'),
+                    base_path('Modules/*/Database'),
+                ],
 
                 /*
                  * Allows to generate specs either for OpenAPI 3.0.0 or OpenAPI 3.1.0.
@@ -191,7 +206,16 @@ return [
                 ],
             ],
             'routes' => [
+                'docs' => 'user-docs',
                 'api' => 'api/user-documentation',
+                'oauth2_callback' => 'api/user-oauth2-callback',
+                'middleware' => [
+                    'api' => [],
+                    'asset' => [],
+                    'docs' => [],
+                    'oauth2_callback' => [],
+                ],
+                'group_options' => [],
             ],
             'paths' => [
                 'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
@@ -199,9 +223,9 @@ return [
                 'docs_yaml' => 'user-api-docs.yaml',
                 'format_to_use_for_docs' => env('L5_FORMAT_TO_USE_FOR_DOCS', 'json'),
                 'annotations' => [
+                    base_path('app/Http/Controllers/OpenApiController.php'),
                     base_path('Modules/User/App/Http/Controllers/Api'),
                     base_path('Modules/Task/App/Http/Controllers/Api'),
-                    base_path('app/Http/Controllers/Api'),
                 ],
                 'views' => base_path('resources/views/vendor/l5-swagger'),
                 'base' => env('L5_SWAGGER_BASE_PATH', null),
@@ -211,26 +235,13 @@ return [
             'scanOptions' => [
                 'analyser' => null,
                 'analysis' => null,
-                'processors' => [
-                    new \OpenApi\Processors\DocBlockDescriptions(),
-                    new \OpenApi\Processors\MergeIntoOpenApi(),
-                    new \OpenApi\Processors\MergeIntoComponents(),
-                    new \OpenApi\Processors\ExpandClasses(),
-                    new \OpenApi\Processors\ExpandInterfaces(),
-                    new \OpenApi\Processors\ExpandTraits(),
-                    new \OpenApi\Processors\ExpandEnums(),
-                    new \OpenApi\Processors\AugmentSchemas(),
-                    new \OpenApi\Processors\AugmentProperties(),
-                    new \OpenApi\Processors\BuildPaths(),
-                    new \OpenApi\Processors\AugmentParameters(),
-                    new \OpenApi\Processors\AugmentRefs(),
-                    new \OpenApi\Processors\MergeJsonContent(),
-                    new \OpenApi\Processors\MergeXmlContent(),
-                    new \OpenApi\Processors\OperationId(),
-                    new \OpenApi\Processors\CleanUnmerged(),
-                ],
+                'processors' => [],
                 'pattern' => null,
-                'exclude' => [],
+                'exclude' => [
+                    base_path('database'),
+                    base_path('Modules/*/database'),
+                    base_path('Modules/*/Database'),
+                ],
                 'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', '3.0.0'),
             ],
             'securityDefinitions' => [
@@ -273,7 +284,16 @@ return [
                 ],
             ],
             'routes' => [
+                'docs' => 'admin-docs',
                 'api' => 'api/admin-documentation',
+                'oauth2_callback' => 'api/admin-oauth2-callback',
+                'middleware' => [
+                    'api' => [],
+                    'asset' => [],
+                    'docs' => [],
+                    'oauth2_callback' => [],
+                ],
+                'group_options' => [],
             ],
             'paths' => [
                 'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
@@ -281,10 +301,10 @@ return [
                 'docs_yaml' => 'admin-api-docs.yaml',
                 'format_to_use_for_docs' => env('L5_FORMAT_TO_USE_FOR_DOCS', 'json'),
                 'annotations' => [
+                    base_path('app/Http/Controllers/OpenApiController.php'),
                     base_path('Modules/User/App/Http/Controllers/Admin'),
                     base_path('Modules/Task/App/Http/Controllers/Admin'),
                     base_path('Modules/Admin/App/Http/Controllers'),
-                    base_path('app/Http/Controllers/Admin'),
                 ],
                 'views' => base_path('resources/views/vendor/l5-swagger'),
                 'base' => env('L5_SWAGGER_BASE_PATH', null),
@@ -294,26 +314,13 @@ return [
             'scanOptions' => [
                 'analyser' => null,
                 'analysis' => null,
-                'processors' => [
-                    new \OpenApi\Processors\DocBlockDescriptions(),
-                    new \OpenApi\Processors\MergeIntoOpenApi(),
-                    new \OpenApi\Processors\MergeIntoComponents(),
-                    new \OpenApi\Processors\ExpandClasses(),
-                    new \OpenApi\Processors\ExpandInterfaces(),
-                    new \OpenApi\Processors\ExpandTraits(),
-                    new \OpenApi\Processors\ExpandEnums(),
-                    new \OpenApi\Processors\AugmentSchemas(),
-                    new \OpenApi\Processors\AugmentProperties(),
-                    new \OpenApi\Processors\BuildPaths(),
-                    new \OpenApi\Processors\AugmentParameters(),
-                    new \OpenApi\Processors\AugmentRefs(),
-                    new \OpenApi\Processors\MergeJsonContent(),
-                    new \OpenApi\Processors\MergeXmlContent(),
-                    new \OpenApi\Processors\OperationId(),
-                    new \OpenApi\Processors\CleanUnmerged(),
-                ],
+                'processors' => [],
                 'pattern' => null,
-                'exclude' => [],
+                'exclude' => [
+                    base_path('database'),
+                    base_path('Modules/*/database'),
+                    base_path('Modules/*/Database'),
+                ],
                 'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', '3.0.0'),
             ],
             'securityDefinitions' => [

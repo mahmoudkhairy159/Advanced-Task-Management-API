@@ -10,7 +10,32 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Modules\User\App\Traits\UserOtpTrait;
 use Modules\User\App\Repositories\UserRepository;
+use OpenApi\Attributes as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="VerificationCodeRequest",
+ *     type="object",
+ *     required={"code"},
+ *     @OA\Property(property="code", type="string", description="Email verification code", example="123456")
+ * )
+ *
+ * @OA\Schema(
+ *     schema="VerificationResponse",
+ *     type="object",
+ *     @OA\Property(property="success", type="boolean", example=true),
+ *     @OA\Property(property="message", type="string", example="Email verified successfully"),
+ *     @OA\Property(property="data", type="object", example={})
+ * )
+ *
+ * @OA\Schema(
+ *     schema="ResendVerificationResponse",
+ *     type="object",
+ *     @OA\Property(property="success", type="boolean", example=true),
+ *     @OA\Property(property="message", type="string", example="Verification code resent successfully"),
+ *     @OA\Property(property="data", type="object", example={})
+ * )
+ */
 class VerificationController extends Controller
 {
     use ApiResponseTrait, UserOtpTrait;
@@ -31,10 +56,52 @@ class VerificationController extends Controller
     }
 
     /**
-     * Resend the email verification notification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/api/v1/auth/email/resend",
+     *     summary="Resend email verification code",
+     *     description="Resend email verification OTP code to the authenticated user. Rate limited to 6 attempts per minute.",
+     *     operationId="resendVerificationCode",
+     *     tags={"Authentication"},
+     *     security={{"jwt":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="Verification code resent successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ResendVerificationResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request - Already verified, code already sent, or cannot resend",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="success", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Email already verified"),
+     *                     @OA\Property(property="errors", type="object", example={})
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="success", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Verification code already sent"),
+     *                     @OA\Property(property="errors", type="object", example={})
+     *                 )
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized - Invalid or missing token",
+     *         @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
+     *     ),
+     *     @OA\Response(
+     *         response=429,
+     *         description="Too many requests - Rate limit exceeded",
+     *         @OA\JsonContent(ref="#/components/schemas/RateLimitError")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(ref="#/components/schemas/ServerError")
+     *     )
+     * )
      */
     public function resend(Request $request)
     {
@@ -87,11 +154,62 @@ class VerificationController extends Controller
     }
 
     /**
-     * Mark the authenticated user's email address as verified.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @OA\Post(
+     *     path="/api/v1/auth/email/verify",
+     *     summary="Verify email address",
+     *     description="Verify the authenticated user's email address using OTP code. Rate limited to 6 attempts per minute.",
+     *     operationId="verifyEmail",
+     *     tags={"Authentication"},
+     *     security={{"jwt":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Email verification request data",
+     *         @OA\JsonContent(ref="#/components/schemas/VerificationCodeRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Email verified successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/VerificationResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request - Already verified, invalid OTP, or verification failed",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="success", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Email already verified"),
+     *                     @OA\Property(property="errors", type="object", example={})
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="success", type="boolean", example=false),
+     *                     @OA\Property(property="message", type="string", example="Invalid OTP code"),
+     *                     @OA\Property(property="errors", type="object", example={})
+     *                 )
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized - Invalid or missing token",
+     *         @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(ref="#/components/schemas/ValidationError")
+     *     ),
+     *     @OA\Response(
+     *         response=429,
+     *         description="Too many requests - Rate limit exceeded",
+     *         @OA\JsonContent(ref="#/components/schemas/RateLimitError")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(ref="#/components/schemas/ServerError")
+     *     )
+     * )
      */
     public function verify(Request $request)
     {
