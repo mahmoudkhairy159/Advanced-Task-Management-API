@@ -300,7 +300,6 @@ Modules/{ModuleName}/Config/config.php
 - [Laravel Documentation](https://laravel.com/docs)
 - [JWT Authentication Guide](https://jwt.io/)
 - [Swagger/OpenAPI Specification](https://swagger.io/specification/)
-- [Docker Documentation](https://docs.docker.com/)
 
 ---
 
