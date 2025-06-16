@@ -4,6 +4,7 @@ namespace Modules\Task\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Modules\Task\App\Http\Middleware\TaskRateLimiter;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,9 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         parent::boot();
+
+        // Register the rate limiter middleware
+        $this->app['router']->aliasMiddleware('task.rate.limit', TaskRateLimiter::class);
     }
 
     /**

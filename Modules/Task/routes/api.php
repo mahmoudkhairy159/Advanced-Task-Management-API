@@ -27,7 +27,13 @@ Route::prefix('v1')->name('user-api.')->group(function () {
 
     /***********Trashed tasks SoftDeletes**************/
 
-    Route::apiResource('tasks', TaskController::class);
+    // Apply rate limiting to task creation
+    Route::post('/tasks', [TaskController::class, 'store'])
+        ->middleware('task.rate.limit')
+        ->name('tasks.store');
+
+    // Other task routes without rate limiting
+    Route::apiResource('tasks', TaskController::class)->except(['store']);
     // tasks routes
 
 
