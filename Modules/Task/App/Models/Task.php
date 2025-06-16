@@ -40,6 +40,17 @@ class Task extends Model
         'updater_id',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'due_date' => 'datetime',
+        'status' => 'integer',
+        'priority' => 'integer',
+    ];
+
     /************************************* Query Scopes **********************************************/
 
     /**
@@ -64,6 +75,26 @@ class Task extends Model
     public function scopePriority($query, $priority)
     {
         return $query->where('priority', $priority);
+    }
+
+    /**
+     * Scope a query to only include tasks due within specified hours.
+     */
+    public function scopeDueSoon($query, int $hours = 24)
+    {
+        $now = now();
+        $targetTime = $now->copy()->addHours($hours);
+
+        return $query->where('due_date', '<=', $targetTime)
+            ->where('due_date', '>', $now);
+    }
+
+    /**
+     * Scope a query to only include tasks with assignable entities.
+     */
+    public function scopeWithAssignable($query)
+    {
+        return $query->whereHas('assignable');
     }
 
     /************************************* Relationships *********************************************/
