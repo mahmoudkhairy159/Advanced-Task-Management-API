@@ -180,6 +180,9 @@ class Admin extends Authenticatable implements JWTSubject
      */
     public function hasPermission($permission)
     {
+        if ($this->role->permission_type === 'all') {
+            return true;
+        }
         return $this->permissions()->contains($permission);
     }
 }

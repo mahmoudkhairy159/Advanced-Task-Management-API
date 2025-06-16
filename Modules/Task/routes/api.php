@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Article\App\Http\Controllers\Api\ArticleController;
 use Modules\Task\App\Http\Controllers\Admin\TaskController;
 
 /*

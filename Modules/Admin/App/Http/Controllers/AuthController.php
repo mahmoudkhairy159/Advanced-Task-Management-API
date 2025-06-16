@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         $this->guard = 'admin-api';
 
-        request()->merge(['token' => 'true']);
+
 
         Auth::setDefaultDriver($this->guard);
 
@@ -57,7 +57,7 @@ class AuthController extends Controller
         try {
             $request->validated();
 
-            if (!$jwtToken = auth()->guard($this->guard)->attempt($request->only(['email', 'password']))) {
+            if (!$jwtToken = Auth::guard($this->guard)->attempt($request->only(['email', 'password']))) {
                 return $this->errorResponse(
                     [],
                     "Invalid email or Password",
@@ -65,7 +65,8 @@ class AuthController extends Controller
                 );
             }
 
-            $admin = auth($this->guard)->user();
+            $admin = Auth::guard($this->guard)->user();
+
             if (!$admin->status || $admin->blocked) {
                 $message = $admin->blocked ? "Your Account Has Been Blocked" : "Your Account Is Inactive";
                 auth()->guard($this->guard)->logout();

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Admin\App\Http\Requests\Role\StoreRoleRequest;
 use Modules\Admin\App\Http\Requests\Role\UpdateRoleRequest;
 use Modules\Admin\App\Repositories\RoleRepository;
-use Modules\Admin\App\resources\Role\RoleResource;
+use Modules\Admin\App\Transformers\Role\RoleResource;
 
 class RoleController extends Controller
 {
@@ -23,7 +23,7 @@ class RoleController extends Controller
     public function __construct(RoleRepository $roleRepository)
     {
         $this->guard = 'admin-api';
-        request()->merge(['token' => 'true']);
+
         Auth::setDefaultDriver($this->guard);
         $this->_config = request('_config');
         $this->roleRepository = $roleRepository;

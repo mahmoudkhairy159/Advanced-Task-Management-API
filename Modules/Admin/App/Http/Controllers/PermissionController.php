@@ -19,7 +19,7 @@ class PermissionController extends Controller
 
         $this->guard = 'admin-api';
 
-        request()->merge(['token' => 'true']);
+
 
         Auth::setDefaultDriver($this->guard);
 

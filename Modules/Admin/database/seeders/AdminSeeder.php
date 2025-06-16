@@ -14,10 +14,9 @@ class AdminSeeder extends Seeder
     {
 
        Admin::create([
-            'name'       => 'Ahmed Salama',
-            'email'      => 'ahmed.salama@wardlin.com',
-            'password'   => '123456',
-            // 'api_token'  => Str::random(80),
+            'name'       => 'Super Admin',
+            'email'      => 'admin@gmail.com',
+            'password'   => '12345678',
             'status'     => 1,
             'role_id'    => 1,
         ]);
@@ -25,9 +24,8 @@ class AdminSeeder extends Seeder
 
         Admin::create([
             'name'       => 'Mahmoud Khairy',
-            'email'      => 'mahmoud.khairy@wardlin.com',
+            'email'      => 'mahmoudkhairy159@gmail.com',
             'password'   => '12345678',
-            // 'api_token'  => Str::random(80),
             'status'     => 1,
             'role_id'    => 1,
         ]);

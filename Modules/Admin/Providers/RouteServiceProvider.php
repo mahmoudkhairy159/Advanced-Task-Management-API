@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     protected string $name = 'Admin';
-    protected string $moduleNamespace = 'Modules\Admin\App\Http\Controllers';
+    // protected string $moduleNamespace = 'Modules\Admin\App\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -49,14 +49,14 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api/user')
             ->middleware('api')
-            ->namespace($this->moduleNamespace. '\Api')
+            // ->namespace($this->moduleNamespace. '\Api')
             ->group(module_path($this->name, '/routes/api.php'));
     }
     protected function mapAdminApiRoutes(): void
     {
         Route::prefix('api/admin')
             ->middleware('api')
-            ->namespace($this->moduleNamespace. '\Admin')
+            // ->namespace($this->moduleNamespace. '\Admin')
             ->group(module_path($this->name, '/routes/admin-api.php'));
     }
 

@@ -25,7 +25,7 @@ class AdminController extends Controller
     public function __construct(AdminRepository $adminRepository)
     {
         $this->guard = 'admin-api';
-        request()->merge(['token' => 'true']);
+
         Auth::setDefaultDriver($this->guard);
         $this->_config = request('_config');
         $this->adminRepository = $adminRepository;

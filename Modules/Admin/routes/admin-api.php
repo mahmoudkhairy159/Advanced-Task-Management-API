@@ -37,12 +37,12 @@ Route::prefix('v1')->name('admin-api.')->group(function () {
 
 
     // Roles routes
-    Route::apiResource('roles',RoleController::class);
+    Route::apiResource('roles', RoleController::class);
     // Roles routes
 
 
     // Admins routes
-    Route::apiResource('admins',AdminController::class);
+    Route::apiResource('admins', AdminController::class);
     // Admins routes
 
 });

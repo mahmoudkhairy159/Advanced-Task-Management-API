@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Article\App\Http\Controllers\Admin\ArticleCategoryController;
-use Modules\Article\App\Http\Controllers\Admin\ArticleController;
-use Modules\Article\App\Http\Controllers\Admin\ArticleFactController;
 use Modules\Task\App\Http\Controllers\Admin\TaskController;
 
 /*
@@ -33,6 +30,6 @@ Route::prefix('v1')->name('admin-api.')->group(function () {
 
     Route::apiResource('tasks', TaskController::class);
     // tasks routes
-    
+
 
 });

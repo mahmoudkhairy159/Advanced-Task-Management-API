@@ -1,5 +1,8 @@
 <?php
 
+use Modules\Admin\App\Models\Admin;
+use Modules\User\App\Models\User;
+
 return [
 
     /*
@@ -44,10 +47,7 @@ return [
             'driver' => 'jwt',
             'provider' => 'admins',
         ],
-        'teacher-api' => [
-            'driver' => 'jwt',
-            'provider' => 'teachers',
-        ],
+
         'user-api' => [
             'driver' => 'jwt',
             'provider' => 'users',
@@ -81,10 +81,7 @@ return [
             'driver' => 'eloquent',
             'model' => Admin::class,
         ],
-        'teachers' => [
-            'driver' => 'eloquent',
-            'model' => Teacher::class,
-        ],
+
     ],
 
     /*
@@ -119,12 +116,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        'teachers' => [
-            'provider' => 'teachers',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+
     ],
 
     /*

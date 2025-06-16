@@ -28,15 +28,10 @@ return new class extends Migration
             $table->index('status');
             $table->index('due_date');
 
-            // Add polymorphic relationship columns
-            $table->morphs('assignable'); // This will create assignable_type and assignable_id
-            $table->morphs('creator'); // This will create creator_type and creator_id
-            $table->morphs('updater'); // This will create updater_type and updater_id
-
-            // Add indexes for better performance
-            $table->index(['assignable_type', 'assignable_id']);
-            $table->index(['creator_type', 'creator_id']);
-            $table->index(['updater_type', 'updater_id']);
+            // Add polymorphic relationship columns with indexes
+            $table->morphs('assignable'); // This will create assignable_type, assignable_id and index
+            $table->morphs('creator'); // This will create creator_type, creator_id and index
+            $table->morphs('updater'); // This will create updater_type, updater_id and index
         });
     }
 

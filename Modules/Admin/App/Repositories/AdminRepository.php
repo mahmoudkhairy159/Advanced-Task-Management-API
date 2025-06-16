@@ -23,7 +23,7 @@ class AdminRepository extends BaseRepository
             ->orderBy('created_at', 'desc');
     }
 
-    public function updateOne(array $data, int $id)
+    public function updateOne(array $data, $id)
     {
         try {
             DB::beginTransaction();
@@ -41,7 +41,7 @@ class AdminRepository extends BaseRepository
         }
     }
     //delete by admin
-    public function deleteOne(int $id)
+    public function deleteOne($id)
     {
         DB::beginTransaction();
         try {

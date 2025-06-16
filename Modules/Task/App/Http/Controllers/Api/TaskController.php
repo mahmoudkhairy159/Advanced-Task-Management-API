@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Article\App\Http\Controllers\Api;
+namespace Modules\Task\App\Http\Controllers\Api;
 
 use Exception;
 use App\Traits\ApiResponseTrait;
@@ -13,7 +13,7 @@ use Modules\Task\App\Repositories\TaskRepository;
 use Modules\Task\App\Transformers\Admin\Task\TaskResource;
 use Modules\Task\App\Transformers\Api\Task\TaskCollection;
 
-class ArticleController extends Controller
+class TaskController extends Controller
 {
     use ApiResponseTrait;
 

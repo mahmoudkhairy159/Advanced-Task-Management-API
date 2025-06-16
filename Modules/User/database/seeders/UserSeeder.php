@@ -14,32 +14,23 @@ class UserSeeder extends Seeder
     {
         $items = [
 
-          
-            [
-                'name'       => 'Ahmad Fahd',
-                'email'      => 'ahmad.fahd@wardlin.com',
-                'password'   => '12345678',
-                'verified_at'   => '2023-10-07T19:22:09.000000Z',
-            ],
-            [
-                'name'       => 'Ahmed Salama',
-                'email'      => 'ahmed.salama@wardlin.com',
-                'password'   => '12345678',
-                'verified_at'   => '2023-10-07T19:22:09.000000Z',
-            ],
+
+
             [
                 'name'       => 'Mahmoud Khairy',
-                'email'      => 'mahmoud.khairy@wardlin.com',
+                'email'      => 'mahmoudkhairy159@gmail.com',
                 'password'   => '12345678',
                 'verified_at'   => '2023-10-07T19:22:09.000000Z',
 
             ],
+
             [
-                'name'       => 'Mahad shbeeb',
-                'email'      => 'mahad.shbeeb@wardlin.com',
-                'password'   => '12345678',
-                'verified_at'   => '2023-10-07T19:22:09.000000Z',
+                'name' => 'User',
+                'email' => 'user@gmail.com',
+                'password' => '12345678',
+                'verified_at' => '2023-10-07T19:22:09.000000Z',
             ],
+
 
         ];
         foreach ($items as $item) {
