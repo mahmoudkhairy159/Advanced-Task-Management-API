@@ -296,47 +296,6 @@ Each module contains its own configuration in:
 Modules/{ModuleName}/Config/config.php
 ```
 
-## 🤝 **Contributing**
-
-### **Development Workflow**
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### **Code Standards**
-- Follow **PSR-12** coding standards
-- Use **Laravel conventions** for naming
-- Write **comprehensive tests** for new features
-- Update **API documentation** for endpoint changes
-- Follow **commit message conventions**
-
-### **Pull Request Guidelines**
-- Ensure all tests pass
-- Update documentation if needed
-- Add appropriate labels
-- Request review from maintainers
-
-## 📄 **License**
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 **Acknowledgments**
-
-- **Laravel Community** for the excellent framework
-- **Swagger/OpenAPI** for API documentation standards
-- **JWT Working Group** for authentication specifications
-- **Open Source Contributors** who made this project possible
-
-## 🆘 **Support**
-
-### **Getting Help**
-- 📖 Check the [API Documentation](http://localhost:8000/api/documentation)
-- 🐛 Report bugs via [GitHub Issues](repository-url/issues)
-- 💬 Join our community discussions
-- 📧 Contact the development team
-
 ### **Useful Resources**
 - [Laravel Documentation](https://laravel.com/docs)
 - [JWT Authentication Guide](https://jwt.io/)
