@@ -176,12 +176,12 @@ Access comprehensive Swagger documentation at:
 
 #### **Authentication Endpoints**
 ```bash
-POST /api/v1/auth/register     # User registration
-POST /api/v1/auth/login        # User authentication  
-POST /api/v1/auth/refresh      # Token refresh
-POST /api/v1/auth/logout       # User logout
-POST /api/v1/auth/forgot-password    # Password reset request
-POST /api/v1/auth/reset-password     # Password reset confirmation
+POST /api/user/v1/auth/register     # User registration
+POST /api/user/v1/auth/login        # User authentication  
+POST /api/user/v1/auth/refresh      # Token refresh
+POST /api/user/v1/auth/logout       # User logout
+POST /api/user/v1/auth/forgot-password    # Password reset request
+POST /api/user/v1/auth/reset-password     # Password reset confirmation
 ```
 
 #### **Task Management Endpoints**
@@ -207,7 +207,7 @@ GET    /api/admin/v1/permissions       # List permissions
 
 1. **Register a new user**
 ```bash
-curl -X POST http://localhost:8000/api/v1/auth/register \
+curl -X POST http://localhost:8000/api/user/v1/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "John",
@@ -220,7 +220,7 @@ curl -X POST http://localhost:8000/api/v1/auth/register \
 
 2. **Login and get JWT token**
 ```bash
-curl -X POST http://localhost:8000/api/v1/auth/login \
+curl -X POST http://localhost:8000/api/user/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",
