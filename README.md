@@ -154,22 +154,9 @@ php artisan l5-swagger:generate --all
 7. **Start development server**
 ```bash
 php artisan serve
-# Or use the enhanced dev command with queue workers
-composer run dev
 ```
 
-#### **Option 2: Docker Development**
 
-1. **Build and start containers**
-```bash
-docker-compose -f docker-compose.dev.yml up -d
-```
-
-2. **Install dependencies in container**
-```bash
-docker exec -it dev-envirdian-app composer install
-docker exec -it dev-envirdian-app php artisan migrate --seed
-```
 
 ### **Access Points**
 
